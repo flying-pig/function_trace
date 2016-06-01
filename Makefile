@@ -18,10 +18,14 @@ endif
 
 all:
 	gcc $(DEFS) -fPIC -shared -o libfunc_trace.so func_trace.c 
-	gcc -g example.c -o example -finstrument-functions $(LIBS)
 
 clean:
-	rm -fr example libfunc_trace.so
+	rm -fr libfunc_trace.so
 
 test:
+	gcc -g example.c -o example -finstrument-functions $(LIBS)
 	LD_PRELOAD=./libfunc_trace.so ./example
+	@echo
+	gcc -g -finstrument-functions -finstrument-functions-exclude-function-list=foo,bar example.c -o example2
+	LD_PRELOAD=./libfunc_trace.so ./example2
+	rm example example2

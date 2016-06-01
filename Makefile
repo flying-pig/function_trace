@@ -28,4 +28,7 @@ test:
 	@echo
 	gcc -g -finstrument-functions -finstrument-functions-exclude-function-list=foo,bar example.c -o example2
 	LD_PRELOAD=./libfunc_trace.so ./example2
-	rm example example2
+	@echo
+	g++ -g -finstrument-functions example.cc -o example-cc
+	LD_PRELOAD=./libfunc_trace.so ./example-cc
+	rm example example2 example-cc
